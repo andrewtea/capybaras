@@ -1,11 +1,11 @@
 {
-  "resource_pack_name": "Capybara1",
-  "texture_data": {
-    "capybara:melon_on_a_stick": {
-      "textures": "textures/items/melon_on_a_stick"
-    },
-    "capybara:melon_on_a_stick_icon": {
-      "textures": "textures/items/melon_on_a_stick_icon"
+    "resource_pack_name": "Capybara1",
+    "texture_data": {
+        "capybara:melon_on_a_stick": {
+            "textures": "textures/items/melon_on_a_stick"
+        },
+        "capybara:melon_on_a_stick_icon": {
+            "textures": "textures/items/melon_on_a_stick_icon"
+        }
     }
-  }
 }
