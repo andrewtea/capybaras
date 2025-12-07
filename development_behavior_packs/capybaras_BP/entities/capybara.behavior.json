@@ -53,20 +53,28 @@
                 "minecraft:rideable": {
                     "seat_count": 1,
                     "controlling_seat": 0,
-                    "family_types": ["player"],
+                    "family_types": [
+                        "player"
+                    ],
                     "interact_text": "action.interact.ride.car",
                     "pull_in_entities": false,
                     "rider_can_interact": true,
                     "seats": [
                         {
-                            "position": [0, 0.45, -0.3],
+                            "position": [
+                                0,
+                                0.45,
+                                -0.3
+                            ],
                             "min_rider_count": 0,
                             "max_rider_count": 1
                         }
                     ]
                 },
                 "minecraft:item_controllable": {
-                    "control_items": ["capybara:melon_on_a_stick"]
+                    "control_items": [
+                        "capybara:melon_on_a_stick"
+                    ]
                 },
                 "minecraft:behavior.controlled_by_player": {
                     "mount_speed_multiplier": 2
@@ -75,7 +83,10 @@
         },
         "components": {
             "minecraft:type_family": {
-                "family": ["horse", "mob"]
+                "family": [
+                    "horse",
+                    "mob"
+                ]
             },
             "minecraft:breathable": {
                 "total_supply": 15,
@@ -88,6 +99,31 @@
             },
             "minecraft:movement.basic": {},
             "minecraft:jump.static": {},
+            "minecraft:equip_item": {
+                "can_wear_armor": true
+            },
+            "minecraft:inventory": {
+                "inventory_size": 2,
+                "container_type": "container"
+            },
+            "minecraft:behavior.equip_item": {
+                "priority": 2
+            },
+            "minecraft:behavior.pickup_items": {
+                "priority": 2,
+                "can_pickup_to_hand_or_equipment": true
+            },
+            "minecraft:shareables": {
+                "singular_pickup": true,
+                "items": [
+                    {
+                        "item": "minecraft:diamond_helmet",
+                        "want_amount": 1,
+                        "surplus_amount": 1,
+                        "priority": 1
+                    }
+                ]
+            },
             "minecraft:can_climb": {},
             "minecraft:collision_box": {
                 "width": 0.9,
@@ -138,7 +174,9 @@
             "minecraft:behavior.tempt": {
                 "priority": 4,
                 "speed_multiplier": 1.25,
-                "items": ["wheat"]
+                "items": [
+                    "wheat"
+                ]
             },
             "minecraft:behavior.follow_parent": {
                 "priority": 5,
@@ -171,57 +209,17 @@
             "minecraft:equippable": {
                 "slots": [
                     {
-                        "slot": 0,
-                        "item": "minecraft:leather_helmet",
+                        "slot": 1,
+                        "item": "golden_helmet",
                         "accepted_items": [
-                            "minecraft:leather_helmet",
-                            "minecraft:chainmail_helmet",
-                            "minecraft:iron_helmet",
-                            "minecraft:diamond_helmet",
-                            "minecraft:golden_helmet",
-                            "minecraft:netherite_helmet",
-                            "minecraft:carved_pumpkin"
-                        ],
-                        "on_equip": {
-                            "event": "example:foo",
-                            "target": "self"
-                        }
+                            "golden_helmet"
+                        ]
                     },
                     {
                         "slot": 1,
-                        "item": "minecraft:leather_chestplate",
+                        "item": "diamond_helmet",
                         "accepted_items": [
-                            "minecraft:leather_chestplate",
-                            "minecraft:chainmail_chestplate",
-                            "minecraft:iron_chestplate",
-                            "minecraft:diamond_chestplate",
-                            "minecraft:golden_chestplate",
-                            "minecraft:netherite_chestplate",
-                            "minecraft:diamond_horse_armor"
-                        ]
-                    },
-                    {
-                        "slot": 2,
-                        "item": "minecraft:leather_leggings",
-                        "accepted_items": [
-                            "minecraft:leather_leggings",
-                            "minecraft:chainmail_leggings",
-                            "minecraft:iron_leggings",
-                            "minecraft:diamond_leggings",
-                            "minecraft:golden_leggings",
-                            "minecraft:netherite_leggings"
-                        ]
-                    },
-                    {
-                        "slot": 3,
-                        "item": "minecraft:leather_boots",
-                        "accepted_items": [
-                            "minecraft:leather_boots",
-                            "minecraft:chainmail_boots",
-                            "minecraft:iron_boots",
-                            "minecraft:diamond_boots",
-                            "minecraft:golden_boots",
-                            "minecraft:netherite_boots"
+                            "diamond_helmet"
                         ]
                     }
                 ]
@@ -229,20 +227,117 @@
             "minecraft:interact": {
                 "interactions": [
                     {
-                        "equip_item_slot": "1",
+                        "play_sounds": "armor.equip_generic",
                         "on_interact": {
                             "filters": {
                                 "all_of": [
                                     {
-                                        "test": "has_equipment_tag",
-                                        "subject": "player",
-                                        "domain": "hand",
-                                        "value": "minecraft:horse_armor"
+                                        "none_of": [
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "self",
+                                                "domain": "inventory",
+                                                "value": "leather_helmet"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "self",
+                                                "domain": "inventory",
+                                                "value": "leather_chestplater"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "self",
+                                                "domain": "inventory",
+                                                "value": "golden_horse_armor"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "self",
+                                                "domain": "inventory",
+                                                "value": "diamond_horse_armor"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "any_of": [
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "player",
+                                                "domain": "hand",
+                                                "value": "diamond_helmet"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "player",
+                                                "domain": "hand",
+                                                "value": "golden_helmet"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "player",
+                                                "domain": "hand",
+                                                "value": "leather_helmet"
+                                            },
+                                            {
+                                                "test": "has_equipment",
+                                                "subject": "player",
+                                                "domain": "hand",
+                                                "value": "diamond_horse_armor"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_sneak_held",
+                                        "subject": "other",
+                                        "value": false
                                     }
                                 ]
                             },
                             "target": "self"
-                        }
+                        },
+                        "equip_item_slot": "slot.armor.head",
+                        "interact_text": "action.interact.equiphorsearmor"
+                    },
+                    {
+                        "play_sounds": "saddle",
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "self",
+                                        "domain": "inventory",
+                                        "operator": "not",
+                                        "value": "diamond_helmet"
+                                    },
+                                    {
+                                        "test": "has_equipment",
+                                        "subject": "other",
+                                        "domain": "hand",
+                                        "value": "diamond_helmet"
+                                    },
+                                    {
+                                        "test": "is_family",
+                                        "subject": "other",
+                                        "value": "player"
+                                    },
+                                    {
+                                        "test": "is_sneak_held",
+                                        "subject": "other",
+                                        "value": false
+                                    }
+                                ]
+                            },
+                            "target": "self"
+                        },
+                        "equip_item_slot": "slot.armor.head",
+                        "interact_text": "action.interact.saddle"
                     }
                 ]
             }
@@ -257,33 +352,45 @@
                     {
                         "weight": 5,
                         "add": {
-                            "component_groups": ["minecraft:capybara_baby"]
+                            "component_groups": [
+                                "minecraft:capybara_baby"
+                            ]
                         }
                     }
                 ]
             },
             "minecraft:entity_born": {
                 "add": {
-                    "component_groups": ["minecraft:capybara_baby"]
+                    "component_groups": [
+                        "minecraft:capybara_baby"
+                    ]
                 }
             },
             "minecraft:entity_transformed": {
                 "remove": {},
                 "add": {
-                    "component_groups": ["minecraft:capybara_adult"]
+                    "component_groups": [
+                        "minecraft:capybara_adult"
+                    ]
                 }
             },
             "minecraft:ageable_grow_up": {
                 "remove": {
-                    "component_groups": ["minecraft:capybara_baby"]
+                    "component_groups": [
+                        "minecraft:capybara_baby"
+                    ]
                 },
                 "add": {
-                    "component_groups": ["minecraft:capybara_adult"]
+                    "component_groups": [
+                        "minecraft:capybara_adult"
+                    ]
                 }
             },
             "minecraft:spawn_adult": {
                 "add": {
-                    "component_groups": ["minecraft:capybara_adult"]
+                    "component_groups": [
+                        "minecraft:capybara_adult"
+                    ]
                 }
             }
         }
