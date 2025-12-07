@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
     "format_version": "1.10.0",
     "minecraft:client_entity": {
         "description": {
@@ -30,3 +31,40 @@
         }
     }
 }
+=======
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "capybara:capybara",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"default": "textures/entity/capybara"
+			},
+			"geometry": {
+				"default": "geometry.capybara"
+			},
+			"render_controllers": [
+				"controller.render.capybara"
+			],
+			"enable_attachables": true,
+			"held_item_ignores_lighting": true,
+			"spawn_egg": {
+				"texture": "capybara:spawn_egg",
+				"texture_index": 0
+			},
+			"animations": {
+				"walk": "animation.capybara.walk",
+				"idle": "animation.capybara.idle",
+				"controller": "controller.animation.capybara"
+			},
+			"scripts": {
+				"animate": [
+					"controller"
+				]
+			}
+		}
+	}
+}
+>>>>>>> Stashed changes
