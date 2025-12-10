@@ -20,12 +20,16 @@
 				"texture_index": 0
 			},
             "animations": {
+                "look_at_target": "animation.common.look_at_target",
                 "walk": "animation.capybara.walk",
                 "idle": "animation.capybara.idle",
                 "controller": "controller.animation.capybara"
             },
             "scripts": {
-                "animate": ["controller"]
+                "animate": [
+                    "controller",
+                    "look_at_target"
+                ]
             }
         }
     }

@@ -9,6 +9,9 @@
         },
         "capybara:spawn_egg": {
             "textures": "textures/items/spawn_egg"
+        },
+        "top_hat_icon": {
+            "textures": "textures/items/top_hat_icon"
         }
     }
 }

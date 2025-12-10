@@ -19,6 +19,9 @@
                             "idle": "!query.ground_speed"
                         }
                     ]
+                },
+                "look_at_target": {
+                    "animations": ["look_at_target"]
                 }
             }
         }
