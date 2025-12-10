@@ -12,6 +12,9 @@
         },
         "top_hat_icon": {
             "textures": "textures/items/top_hat_icon"
+        },
+        "turtle_hat_icon": {
+            "textures": "textures/items/turtle_hat_icon"
         }
     }
 }

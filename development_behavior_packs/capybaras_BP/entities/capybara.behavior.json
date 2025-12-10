@@ -213,6 +213,7 @@
                         "item": "headstuff",
                         "accepted_items": [
                             "asb_cb:top_hat",
+                            "asb_cb:turtle_hat",
                             "diamond_helmet",
                             "golden_helmet",
                             "diamond_sword"
