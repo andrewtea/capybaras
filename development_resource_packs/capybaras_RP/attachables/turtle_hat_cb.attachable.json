@@ -1,0 +1,20 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:attachable": {
+		"description": {
+			"identifier": "asb_cb:turtle_hat",
+			"render_controllers": ["controller.render.armor"],
+			"materials": {
+				"default": "entity_alphatest",
+				"enchanted": "entity_alphatest_glint"
+			},
+			"textures": {
+				"default": "textures/attachable/turtle_hat",
+				"enchanted": "textures/misc/enchanted_item_glint"
+			},
+			"geometry": {
+				"default": "geometry.turtle_hat_cb"
+			}
+		}
+	}
+}
