@@ -14,9 +14,7 @@
 				"value": 9,
 				"slot": "armor_head"
 			},
-			"minecraft:icon": {
-				"texture": "top_hat_icon"
-			},
+			"minecraft:icon": "top_hat_icon",
 			"minecraft:hand_equipped": false,
 			"minecraft:durability": {
 				"max_durability": 77

@@ -1,0 +1,254 @@
+{
+    "namespace": "capybara",
+
+    "renderer_bg": {
+        "type": "image",
+        "texture": "textures/ui/pocket_button_pressed"
+    },
+
+    "overlay_image": {
+        "type": "image",
+        "alpha": 0.5
+    },
+
+    "helmet_image@horse.overlay_image": {
+        "texture": "textures/ui/empty_armor_slot_helmet"
+    },
+
+    "body_image@horse.overlay_image": {
+        "texture": "textures/ui/empty_armor_slot_chestplate"
+    },
+
+    "foot_image@horse.overlay_image": {
+        "texture": "textures/ui/empty_armor_slot_boots"
+    },
+
+    "horse_label@common.section_heading_label": {
+        "layer": 5,
+        "offset": [7, 7],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "text": "$container_title",
+        "localize": "$localize_title"
+    },
+
+    "capybara_equip_grid": {
+        "grid_dimensions": [1, 3],
+        "type": "grid",
+        "anchor_to": "top_left",
+        "anchor_from": "top_left",
+        "collection_name": "capybara_equip_items",
+        "grid_item_template": "@common.container_item",
+        "$item_collection_name": "capybara_equip_items"
+    },
+
+    "capybara_inv_grid": {
+        "grid_dimensions": [5, 3],
+        "type": "grid",
+        "anchor_to": "top_left",
+        "anchor_from": "top_left",
+        "collection_name": "capybara_inventory_items",
+        "grid_item_template": "@common.container_item",
+        "$item_collection_name": "capybara_inventory_items"
+    },
+
+    "inv_bg_panel": {
+        "type": "panel",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [90, 54],
+        "layer": 2,
+        "controls": [{ "cell_image@common.cell_image": {} }]
+    },
+
+    "capybara_equip_panel": {
+        "type": "panel",
+        "anchor_to": "top_left",
+        "anchor_from": "top_left",
+        "controls": [
+            { "equip_grid@horse.capybara_equip_grid": {} },
+
+            {
+                "helmet@horse.helmet_image": {
+                    "anchor_from": "top_left",
+                    "anchor_to": "top_left",
+                    "size": [16, 16],
+                    "offset": [1, 1],
+                    "layer": 4
+                }
+            },
+            {
+                "body@horse.body_image": {
+                    "anchor_from": "top_left",
+                    "anchor_to": "top_left",
+                    "size": [16, 16],
+                    "offset": [1, 19],
+                    "layer": 4
+                }
+            },
+            {
+                "foot@horse.foot_image": {
+                    "anchor_from": "top_left",
+                    "anchor_to": "top_left",
+                    "size": [16, 16],
+                    "offset": [1, 37],
+                    "layer": 4
+                }
+            }
+        ]
+    },
+
+    "inv_panel": {
+        "type": "panel",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "offset": [79, 18],
+        "controls": [
+            { "inv_bg_panel@horse.inv_bg_panel": {} },
+            { "inv_grid@horse.inv_grid": {} }
+        ],
+        "bindings": [
+            {
+                "binding_name": "#is_chested",
+                "binding_name_override": "#visible"
+            }
+        ]
+    },
+
+    "capybara_inv_panel": {
+        "type": "panel",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "offset": [79, 18],
+        "controls": [
+            { "inv_bg_panel@horse.inv_bg_panel": {} },
+            { "inv_grid@horse.capybara_inv_grid": {} }
+        ]
+    },
+
+    "horse_renderer": {
+        "type": "panel",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [54, 54],
+        "controls": [
+            {
+                "renderer_bg@horse.renderer_bg": {
+                    "layer": 3
+                }
+            },
+            {
+                "horse_custom_panel": {
+                    "type": "panel",
+                    "size": ["30%", "30%"],
+                    "offset": [0, "30%"],
+
+                    "controls": [
+                        {
+                            "horse_custom": {
+                                "type": "custom",
+                                "animation_reset_name": "screen_animation_reset",
+                                "anims": [
+                                    "@common.screen_exit_size_animation_push",
+                                    "@common.screen_exit_size_animation_pop",
+                                    "@common.screen_entrance_size_animation_push",
+                                    "@common.screen_entrance_size_animation_pop"
+                                ],
+                                "renderer": "live_horse_renderer",
+                                "layer": 4,
+                                "anchor_from": "center",
+                                "anchor_to": "center",
+                                "bindings": [
+                                    {
+                                        "binding_name": "#entity_id"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+
+    "capybara_panel": {
+        "type": "panel",
+        "controls": [
+            {
+                "container_gamepad_helpers@common.container_gamepad_helpers": {}
+            },
+            {
+                "selected_item_details_factory@common.selected_item_details_factory": {}
+            },
+            {
+                "item_lock_notification_factory@common.item_lock_notification_factory": {}
+            },
+            {
+                "root_panel@common.root_panel": {
+                    "layer": 1,
+                    "controls": [
+                        {
+                            "common_panel@common.common_panel": {
+                                "$use_compact_close_button": true
+                            }
+                        },
+
+                        { "horse_section_label@horse.horse_label": {} },
+                        { "inv_panel@horse.capybara_inv_panel": {} },
+
+                        {
+                            "equipment@horse.capybara_equip_panel": {
+                                "offset": [7, 18]
+                            }
+                        },
+                        {
+                            "renderer@horse.horse_renderer": {
+                                "offset": [25, 18]
+                            }
+                        },
+
+                        {
+                            "inventory_panel_bottom_half_with_label@common.inventory_panel_bottom_half_with_label": {}
+                        },
+                        {
+                            "hotbar_grid_template@common.hotbar_grid_template": {}
+                        },
+                        {
+                            "inventory_selected_icon_button@common.inventory_selected_icon_button": {}
+                        },
+                        { "gamepad_cursor@common.gamepad_cursor_button": {} }
+                    ]
+                }
+            },
+            {
+                "flying_item_renderer@common.flying_item_renderer": {
+                    "layer": 10
+                }
+            }
+        ]
+    },
+    "horse_screen@common.inventory_screen_common": {
+        "$close_on_player_hurt|default": false,
+        "close_on_player_hurt": "$close_on_player_hurt",
+        "$text": "$container_title",
+        "variables": [
+            {
+                "requires": "($desktop_screen and (not ($text = 'Capybara')))",
+                "$screen_content": "horse.horse_panel",
+                "$screen_bg_content": "common.screen_background",
+                "$screen_background_alpha": 0.4
+            },
+            {
+                "requires": "($pocket_screen and (not ($text = 'Capybara')))",
+                "$screen_content": "horse_pocket.horse_panel",
+                "$screen_bg_content": "common.screen_background",
+                "$close_on_player_hurt": true,
+                "$screen_background_alpha": 0.4
+            },
+            {
+                "requires": "($text = 'Capybara')",
+                "$screen_content": "horse.capybara_panel"
+            }
+        ]
+    }
+}
