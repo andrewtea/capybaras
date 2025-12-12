@@ -49,35 +49,6 @@
                             "target": "baby"
                         }
                     }
-                },
-                "minecraft:rideable": {
-                    "seat_count": 1,
-                    "controlling_seat": 0,
-                    "family_types": [
-                        "player"
-                    ],
-                    "interact_text": "action.interact.ride.car",
-                    "pull_in_entities": false,
-                    "rider_can_interact": true,
-                    "seats": [
-                        {
-                            "position": [
-                                0,
-                                0.45,
-                                -0.3
-                            ],
-                            "min_rider_count": 0,
-                            "max_rider_count": 1
-                        }
-                    ]
-                },
-                "minecraft:item_controllable": {
-                    "control_items": [
-                        "capybara:melon_on_a_stick"
-                    ]
-                },
-                "minecraft:behavior.controlled_by_player": {
-                    "mount_speed_multiplier": 2
                 }
             }
         },
@@ -103,7 +74,7 @@
                 "can_wear_armor": true
             },
             "minecraft:inventory": {
-                "inventory_size": 2,
+                "inventory_size": 4,
                 "container_type": "none"
             },
             "minecraft:behavior.equip_item": {
@@ -112,17 +83,6 @@
             "minecraft:behavior.pickup_items": {
                 "priority": 2,
                 "can_pickup_to_hand_or_equipment": true
-            },
-            "minecraft:shareables": {
-                "singular_pickup": true,
-                "items": [
-                    {
-                        "item": "minecraft:diamond_helmet",
-                        "want_amount": 1,
-                        "surplus_amount": 1,
-                        "priority": 1
-                    }
-                ]
             },
             "minecraft:can_climb": {},
             "minecraft:collision_box": {
@@ -161,12 +121,6 @@
                 "priority": 1,
                 "speed_multiplier": 1.25
             },
-            "minecraft:behavior.mount_pathing": {
-                "priority": 2,
-                "speed_multiplier": 1.5,
-                "target_dist": 0,
-                "track_target": true
-            },
             "minecraft:behavior.breed": {
                 "priority": 3,
                 "speed_multiplier": 1
@@ -199,7 +153,6 @@
                 "hard_distance": 6,
                 "max_distance": 10
             },
-            "minecraft:balloonable": {},
             "minecraft:physics": {},
             "minecraft:pushable": {
                 "is_pushable": true,
