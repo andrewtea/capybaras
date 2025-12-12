@@ -104,7 +104,7 @@
             },
             "minecraft:inventory": {
                 "inventory_size": 2,
-                "container_type": "horse"
+                "container_type": "none"
             },
             "minecraft:behavior.equip_item": {
                 "priority": 2
