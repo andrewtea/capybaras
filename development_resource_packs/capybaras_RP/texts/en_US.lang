@@ -1,7 +1,6 @@
 pack.name=Capybaras
 pack.description=gang shit
 item.spawn_egg.entity.capybara:capybara.name=Capybara Spawn Egg
-item.capybara:melon_on_a_stick=Melon on a Stick
 action.hint.exit.capybara:capybara=Press :_input_key.sneak: to dismount
 item.asb_cb:top_hat=Top Hat
 item.asb_cb:turtle_hat=Turtle Hat
