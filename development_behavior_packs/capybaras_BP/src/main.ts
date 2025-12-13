@@ -3,52 +3,61 @@ import {
     system,
     Entity,
     Player,
-    EntityInventoryComponent,
-    ItemStack
+    EntityInventoryComponent
 } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 
 const CAPYBARA_ID = "capybara:capybara";
 
 /* =========================
-   VALID EQUIPMENT
-========================= */
-
-const HEAD_ITEMS = [
-    "asb_cb:top_hat",
-    "asb_cb:turtle_hat",
-    "minecraft:turtle_helmet",
-    "minecraft:diamond_helmet"
-];
-
-const BODY_ITEMS = [
-    "minecraft:diamond_chestplate",
-    "minecraft:leather_chestplate"
-];
-
-/* =========================
    DISPLAY NAME MAP
 ========================= */
 
-const ITEM_NAMES: Record<string, string> = {
-    "asb_cb:top_hat": "Top Hat",
-    "asb_cb:turtle_hat": "Turtle Hat",
-    "minecraft:turtle_helmet": "Turtle Element",
-    "minecraft:diamond_helmet": "Diamond Helmet",
-    "minecraft:diamond_chestplate": "Diamond Chestplate",
-    "minecraft:leather_chestplate": "Leather Tunic",
-    "capybara:melon_on_a_stick": "Melon on a Stick"
+const ITEM_ICONS: Record<string, string> = {
+    "asb_cb:top_hat": "textures/items/top_hat_icon",
+    "asb_cb:turtle_hat": "textures/items/turtle_hat_icon",
+    "minecraft:turtle_helmet": "textures/items/turtle_helmet",
+    "minecraft:leather_helmet": "textures/items/leather_helmet",
+    "minecraft:copper_helmet": "textures/items/copper_helmet",
+    "minecraft:golden_helmet": "textures/items/gold_helmet",
+    "minecraft:chainmail_helmet": "textures/items/chainmail_helmet",
+    "minecraft:iron_helmet": "textures/items/iron_helmet",
+    "minecraft:diamond_helmet": "textures/items/diamond_helmet",
+    "minecraft:netherite_helmet": "textures/items/netherite_helmet",
+    "minecraft:leather_chestplate": "textures/items/leather_chestplate",
+    "minecraft:copper_chestplate": "textures/items/copper_chestplate",
+    "minecraft:golden_chestplate": "textures/items/gold_chestplate",
+    "minecraft:chainmail_chestplate": "textures/items/chainmail_chestplate",
+    "minecraft:iron_chestplate": "textures/items/iron_chestplate",
+    "minecraft:diamond_chestplate": "textures/items/diamond_chestplate",
+    "minecraft:netherite_chestplate": "textures/items/netherite_chestplate"
 };
 
-function prettifyIdentifier(id: string): string {
-    return id
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, c => c.toUpperCase());
-}
+const ALLOWED_HEAD_ITEMS = new Set([
+    "asb_cb:top_hat",
+    "asb_cb:turtle_hat",
+    "minecraft:turtle_helmet",
+    "minecraft:leather_helmet",
+    "minecraft:copper_helmet",
+    "minecraft:golden_helmet",
+    "minecraft:chainmail_helmet",
+    "minecraft:iron_helmet",
+    "minecraft:diamond_helmet",
+    "minecraft:netherite_helmet",
+]);
 
-function getItemDisplayName(typeId: string): string {
-    const short = typeId.includes(":") ? typeId.split(":")[1] : typeId;
-    return ITEM_NAMES[typeId] ?? prettifyIdentifier(short);
+const ALLOWED_BODY_ITEMS = new Set([
+    "minecraft:leather_chestplate",
+    "minecraft:copper_chestplate",
+    "minecraft:golden_chestplate",
+    "minecraft:chainmail_chestplate",
+    "minecraft:iron_chestplate",
+    "minecraft:diamond_chestplate",
+    "minecraft:netherite_chestplate",
+]);
+
+function prettifyIdentifier(id: string): string {
+    return id.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 /* =========================
@@ -59,24 +68,13 @@ const playerCooldowns = new Map<string, number>();
 const COOLDOWN_TICKS = 10;
 
 /* =========================
-   AUTO-EQUIP ON SPAWN
-========================= */
-
-world.afterEvents.entitySpawn.subscribe(event => {
-    const entity = event.entity;
-    if (entity.typeId !== CAPYBARA_ID) return;
-
-    const inv = entity.getComponent("minecraft:inventory") as EntityInventoryComponent;
-    inv?.container?.setItem(0, new ItemStack("asb_cb:top_hat"));
-});
-
-/* =========================
    INTERACTION HANDLER
 ========================= */
 
-world.beforeEvents.playerInteractWithEntity.subscribe(event => {
+world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
     const { player, target } = event;
     if (target.typeId !== CAPYBARA_ID) return;
+    if (target.hasComponent("is_baby")) return;
     if (!player.isSneaking) return;
 
     const now = system.currentTick;
@@ -92,31 +90,32 @@ world.beforeEvents.playerInteractWithEntity.subscribe(event => {
 ========================= */
 
 function showCapybaraEquipmentUI(player: Player, capybara: Entity) {
-    const inv = capybara.getComponent("minecraft:inventory") as EntityInventoryComponent;
+    const inv = capybara.getComponent(
+        "minecraft:inventory"
+    ) as EntityInventoryComponent;
     const container = inv?.container;
     if (!container) return;
 
-    const head = container.getItem(0);
-    const body = container.getItem(1);
+    const headArmor = container.getItem(0);
+    const bodyArmor = container.getItem(1);
+    const headCos = container.getItem(2);
+    const bodyCos = container.getItem(3);
 
-    const form = new ActionFormData()
+    const armorCosForm = new ActionFormData()
         .title("Capybara Equipment")
-        .body(
-            `Head: ${head ? getItemDisplayName(head.typeId) : "None"}\n` +
-            `Body: ${body ? getItemDisplayName(body.typeId) : "None"}`
-        )
-        .button("Equip / Unequip Head")
-        .button("Equip / Unequip Body")
-        .button("Close");
+        .body("Hold an item to equip")
+        .button("Equip / Unequip Armor")
+        .button("Equip / Unequip Cosmetics");
 
-    form.show(player).then(res => {
+    armorCosForm.show(player).then((res) => {
         if (res.canceled || res.selection === undefined) {
             playerCooldowns.set(player.id, system.currentTick);
             return;
         }
 
-        if (res.selection === 0) showEquipMenu(player, capybara, "head");
-        else if (res.selection === 1) showEquipMenu(player, capybara, "body");
+        if (res.selection === 0) showEquipMenu(player, capybara, "Armor");
+        else if (res.selection === 1)
+            showEquipMenu(player, capybara, "Cosmetics");
         else playerCooldowns.set(player.id, system.currentTick);
     });
 }
@@ -125,87 +124,107 @@ function showCapybaraEquipmentUI(player: Player, capybara: Entity) {
    EQUIP MENU
 ========================= */
 
-function showEquipMenu(player: Player, capybara: Entity, slot: "head" | "body") {
-    const inv = capybara.getComponent("minecraft:inventory") as EntityInventoryComponent;
+function showEquipMenu(
+    player: Player,
+    capybara: Entity,
+    slot: "Armor" | "Cosmetics"
+) {
+    const inv = capybara.getComponent(
+        "minecraft:inventory"
+    ) as EntityInventoryComponent;
     const container = inv?.container;
     if (!container) return;
 
-    const valid = slot === "head" ? HEAD_ITEMS : BODY_ITEMS;
-    const index = slot === "head" ? 0 : 1;
-    const equipped = container.getItem(index);
+    const headSlot = slot === "Armor" ? 0 : 2;
+    const bodySlot = slot === "Armor" ? 1 : 3;
+    const head = container.getItem(headSlot);
+    const body = container.getItem(bodySlot);
 
-    const form = new ActionFormData()
-        .title(`Equip ${slot === "head" ? "Head" : "Body"}`)
-        .body(`Currently Equipped: ${equipped ? getItemDisplayName(equipped.typeId) : "None"}`)
-        .button(equipped ? "Unequip" : "Nothing Equipped");
+    const equipForm = new ActionFormData()
+        .title(`Equip ${slot}`)
+        .button(
+            "Equip Head",
+            head ? ITEM_ICONS[head.typeId] : "textures/blocks/barrier"
+        )
+        .button("Unequip Head", "textures/ui/cancel")
+        .divider()
+        .button(
+            "Equip Body",
+            body ? ITEM_ICONS[body.typeId] : "textures/blocks/barrier"
+        )
+        .button("Unequip Body", "textures/ui/cancel")
+        .divider()
+        .button("Close");
 
-    for (const id of valid) {
-        form.button(getItemDisplayName(id));
-    }
-
-    form.button("Back");
-
-    form.show(player).then(res => {
+    equipForm.show(player).then((res) => {
         if (res.canceled || res.selection === undefined) {
             playerCooldowns.set(player.id, system.currentTick);
             return;
         }
+        const inventory = player.getComponent(
+            "minecraft:inventory"
+        ) as EntityInventoryComponent;
+        const handItem = inventory.container?.getItem(player.selectedSlotIndex);
 
-        if (res.selection === 0 && equipped) {
-            giveBack(player, equipped);
-            container.setItem(index, undefined);
-            showCapybaraEquipmentUI(player, capybara);
-            return;
+        switch (res.selection) {
+            case 0:
+                if (!handItem) {
+                    player.sendMessage(
+                        "You must hold something in your hand to equip!"
+                    );
+                    return;
+                }
+                if (!ALLOWED_HEAD_ITEMS.has(handItem.typeId)) {
+                    player.sendMessage("Your capybara cannot equip that item!");
+                    return;
+                }
+                container.swapItems(
+                    headSlot,
+                    player.selectedSlotIndex,
+                    inventory.container
+                );
+                break;
+            case 1:
+                if (inventory.container.emptySlotsCount == 0) {
+                    player.sendMessage("Your inventory is full!");
+                    return;
+                }
+                container.moveItem(
+                    headSlot,
+                    inventory.container.firstEmptySlot(),
+                    inventory.container
+                );
+                break;
+            case 2:
+                if (!handItem) {
+                    player.sendMessage(
+                        "You must hold something in your hand to equip!"
+                    );
+                    return;
+                }
+                if (!ALLOWED_BODY_ITEMS.has(handItem.typeId)) {
+                    player.sendMessage("Your capybara cannot equip that item!");
+                    return;
+                }
+                container.swapItems(
+                    bodySlot,
+                    player.selectedSlotIndex,
+                    inventory.container
+                );
+                break;
+            case 3:
+                if (inventory.container.emptySlotsCount == 0) {
+                    player.sendMessage("Your inventory is full!");
+                    return;
+                }
+                container.moveItem(
+                    bodySlot,
+                    inventory.container.firstEmptySlot(),
+                    inventory.container
+                );
+                break;
+            default:
+                break;
         }
-
-        const backIndex = valid.length + 1;
-        if (res.selection === backIndex) {
-            showCapybaraEquipmentUI(player, capybara);
-            return;
-        }
-
-        const selected = valid[res.selection - 1];
-        if (!selected) return showCapybaraEquipmentUI(player, capybara);
-
-        if (!takeFromPlayer(player, selected)) {
-            player.sendMessage(`You don't have ${getItemDisplayName(selected)}.`);
-            return showCapybaraEquipmentUI(player, capybara);
-        }
-
-        if (equipped) giveBack(player, equipped);
-        container.setItem(index, new ItemStack(selected));
-        showCapybaraEquipmentUI(player, capybara);
     });
-}
-
-/* =========================
-   INVENTORY HELPERS
-========================= */
-
-function takeFromPlayer(player: Player, typeId: string): boolean {
-    const inv = player.getComponent("minecraft:inventory") as any;
-    const c = inv?.container;
-    if (!c) return false;
-
-    for (let i = 0; i < c.size; i++) {
-        const item = c.getItem(i);
-        if (item?.typeId === typeId) {
-            c.setItem(i, undefined);
-            return true;
-        }
-    }
-    return false;
-}
-
-function giveBack(player: Player, item: ItemStack) {
-    const inv = player.getComponent("minecraft:inventory") as any;
-    const c = inv?.container;
-    if (!c) return;
-
-    for (let i = 0; i < c.size; i++) {
-        if (!c.getItem(i)) {
-            c.setItem(i, item);
-            return;
-        }
-    }
 }
