@@ -1,20 +1,26 @@
 {
-    "resource_pack_name": "Capybara1",
-    "texture_data": {
-        "capybara:melon_on_a_stick": {
-            "textures": "textures/items/melon_on_a_stick"
-        },
-        "capybara:melon_on_a_stick_icon": {
-            "textures": "textures/items/melon_on_a_stick_icon"
-        },
-        "capybara:spawn_egg": {
-            "textures": "textures/items/spawn_egg"
-        },
-        "top_hat_icon": {
-            "textures": "textures/items/top_hat_icon"
-        },
-        "turtle_hat_icon": {
-            "textures": "textures/items/turtle_hat_icon"
-        }
-    }
+	"texture_data": {
+		"cowboy_hat": {
+			"textures": "textures/items/cowboy_hat.png"
+		},
+		"capybara:melon_on_a_stick": {
+			"textures": "textures/items/melon_on_a_stick"
+		},
+		"capybara:melon_on_a_stick_icon": {
+			"textures": "textures/items/melon_on_a_stick_icon"
+		},
+		"capybara:spawn_egg": {
+			"textures": "textures/items/spawn_egg"
+		},
+		"top_hat_icon": {
+			"textures": "textures/items/top_hat_icon"
+		},
+		"turtle_hat_icon": {
+			"textures": "textures/items/turtle_hat_icon"
+		},
+		"cowboy_hat_icon": {
+			"textures": "textures/items/cowboy_hat_icon"
+		}
+	},
+	"resource_pack_name": "Capybara1"
 }
